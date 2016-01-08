@@ -1,4 +1,5 @@
 import pymongo
+from scrapy.exceptions import DropItem
 
 from scrapy.conf import settings
 
@@ -17,3 +18,16 @@ class MongoDBPipeline(object):
 
         self.connection.insert(dict(item))
         return item
+
+class FilterWordsPipeline(object):
+
+    words_to_filter = ['right now this does nothing:/']
+
+    def process_item(self, item , spider):
+
+        for word in self.words_to_filter:
+            if word in unicode(item['url']).lower():
+                raise DropItem("Contains forbidden word {}".format(word))
+            else:
+                return item
+

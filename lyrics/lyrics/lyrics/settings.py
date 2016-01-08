@@ -3,7 +3,8 @@ BOT_NAME = 'lyrics'
 SPIDER_MODULES = ['lyrics.spiders']
 NEWSPIDER_MODULE = 'lyrics.spiders'
 
-ITEM_PIPELINES = ['lyrics.pipelines.MongoDBPipeline',]
+ITEM_PIPELINES = {'lyrics.pipelines.MongoDBPipeline': 2, 'lyrics.pipelines.FilterWordsPipeline' : 1}
+
 MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "lyrics"
@@ -19,10 +20,10 @@ MONGODB_COLLECTION  = "lyrics_data"
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY=3
+DOWNLOAD_DELAY=.25
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN=16
-#CONCURRENT_REQUESTS_PER_IP=16
+CONCURRENT_REQUESTS_PER_DOMAIN=2
+#CONCURRENT_REQUESTS_PER_IP=1
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED=False
