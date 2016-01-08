@@ -21,7 +21,7 @@ MONGODB_COLLECTION = "url_two"
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY=.25
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN=2
+#ONCURRENT_REQUESTS_PER_DOMAIN=2
 #CONCURRENT_REQUESTS_PER_IP=1
 
 # Disable cookies (enabled by default)

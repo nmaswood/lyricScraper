@@ -17,7 +17,7 @@ class LyricsSpiderFin(Spider):
             settings['MONGODB_PORT']
             )
     db = connection[settings['MONGODB_DB']]
-    connection =  db["url_one"]
+    connection =  db["lyrics_data"]
 
     data = connection.find()
 
@@ -34,8 +34,6 @@ class LyricsSpiderFin(Spider):
     def parse(self, response):
 
         base_url = response.url
-
-        print base_url
 
         urls = response.xpath("//div[@id='mw-content-text']//ol//li//a//@href").extract()
 
@@ -55,30 +53,25 @@ class LyricsSpiderFin(Spider):
 
         script_less=  ''.join(lyric_box).split("</script>")
 
-        lyrics = script_less[1].split("<!--")[0].replace("<br>", " ")
+        try:
+            lyrics = script_less[1].split("<!--")[0].replace("<br>", " ")
+            lyric_info =script_less[0].split("adunit_id")[0]
+            lyric_info = lyric_info.split("{")[-1].split
+        except:
+            lyrics = ""
 
-        lyric_info =script_less[0].split("adunit_id")[0]
-        lyric_info = lyric_info.split("{")[-1].split(",")
-
-        artist = lyric_info[0]
-        song = lyric_info[1]
-
-        artist = artist.split(":")[-1].replace("\"", "").strip()
-        song_name =  song.split(":")[-1].replace("\"", "").strip()
-
-        base_url = response.meta["base_url"]
-
-        print response.url
-        print artist
-        print song_name
-        print base_url
-        print lyrics
-
-        print "\n\n\n\n\n\n"
+        try:    
+            artist = lyric_info[0]
+            song = lyric_info[1]
+            artist = artist.split(":")[-1].replace("\"", "").strip()
+            song_name =  song.split(":")[-1].replace("\"", "").strip()
+        except:
+            artist = ""
+            song_name = ""
 
         full_lyrics_item = FullLyricsItem()
 
-        full_lyrics_item["url_one"]=  base_url
+        full_lyrics_item["url_one"]=  response.meta["base_url"]
         full_lyrics_item["url_two"] = response.url
         full_lyrics_item["lyrics"] = lyrics
         full_lyrics_item["song_name"] = song_name
