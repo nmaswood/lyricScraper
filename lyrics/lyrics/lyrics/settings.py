@@ -8,7 +8,7 @@ MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "lyrics"
 #MONGODB_COLLECTION  = "lyrics_data"
-MONGODB_COLLECTION = "test_data"
+MONGODB_COLLECTION = "url_two"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'lyrics (+http://www.yourdomain.com)'

@@ -8,11 +8,8 @@ class LyricsItem(Item):
 
 class FullLyricsItem(Item):
 
-    title = Field()
     url_one = Field()
     url_two = Field()
-    genre = Field()
     song_name = Field()
-    year = Field()
+    artist = Field()
     lyrics = Field()
-

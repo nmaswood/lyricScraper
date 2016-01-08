@@ -1,20 +1,41 @@
 from scrapy import Spider
 from scrapy.selector import Selector
 from scrapy import Request
-
+from scrapy.conf import settings
 
 from lyrics.items import LyricsItem
 from lyrics.items import FullLyricsItem
+import pymongo
 
 class LyricsSpiderFin(Spider):
 
+
     name = "lyrics_fin"
 
-    start_urls = [ "http://lyrics.wikia.com/wiki/Draco_And_The_Malfoys:Draco_And_The_Malfoys_(2005)",]
+    connection = pymongo.MongoClient(
+            settings['MONGODB_SERVER'],
+            settings['MONGODB_PORT']
+            )
+    db = connection[settings['MONGODB_DB']]
+    connection =  db["url_one"]
+
+    data = connection.find()
+
 
     allowed_domains = ["lyrics.wikia.com"]
 
+    start_urls = list()
+
+    for d in data:
+
+        start_urls.append(d['url'])
+
+
     def parse(self, response):
+
+        base_url = response.url
+
+        print base_url
 
         urls = response.xpath("//div[@id='mw-content-text']//ol//li//a//@href").extract()
 
@@ -24,7 +45,9 @@ class LyricsSpiderFin(Spider):
 
         for url in urls:
 
-            yield Request(url, callback=self.parse_dir_contents)
+            yield Request(url, callback=self.parse_dir_contents, meta =  {
+                "base_url" : base_url
+                })
 
     def parse_dir_contents(self, response):
 
@@ -43,21 +66,22 @@ class LyricsSpiderFin(Spider):
         artist = artist.split(":")[-1].replace("\"", "").strip()
         song_name =  song.split(":")[-1].replace("\"", "").strip()
 
+        base_url = response.meta["base_url"]
 
         print response.url
         print artist
         print song_name
+        print base_url
+        print lyrics
 
         print "\n\n\n\n\n\n"
 
         full_lyrics_item = FullLyricsItem()
 
-        full_lyrics_item["url_one"]= "this is a test value"
+        full_lyrics_item["url_one"]=  base_url
         full_lyrics_item["url_two"] = response.url
-        full_lyrics_item["title"] =  "this is a test value"
-        full_lyrics_item["genre"] =  "this is a test value"
         full_lyrics_item["lyrics"] = lyrics
         full_lyrics_item["song_name"] = song_name
-        full_lyrics_item["year"] = "this is a test value"
+        full_lyrics_item["artist"] = artist
 
         yield full_lyrics_item

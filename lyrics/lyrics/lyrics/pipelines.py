@@ -26,13 +26,11 @@ class MongoDBPipeline(object):
                 self.connection.insert(dict(item))
         except:
 
-            title =  item["title"]
-            url_one = item["url_one"]
             url_two = item["url_two"]
-            genre = item["genre"]
-            year = item["year"]
             lyrics = item["lyrics"]
+            song_name = item["song_name"]
+            artist = item["artist"]
 
-            if year != "" and lyrics != "" and url_two != "":
+            if lyrics != "" and url_two != "" and song_name != "" and artist != "":
                 self.connection.insert(dict(item))
         return item
