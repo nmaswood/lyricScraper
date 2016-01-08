@@ -3,13 +3,12 @@ BOT_NAME = 'lyrics'
 SPIDER_MODULES = ['lyrics.spiders']
 NEWSPIDER_MODULE = 'lyrics.spiders'
 
-ITEM_PIPELINES = {'lyrics.pipelines.MongoDBPipeline': 2, 'lyrics.pipelines.FilterWordsPipeline' : 1}
-
+ITEM_PIPELINES = {'lyrics.pipelines.MongoDBPipeline': 1 }
 MONGODB_SERVER = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "lyrics"
-MONGODB_COLLECTION  = "lyrics_data"
-
+#MONGODB_COLLECTION  = "lyrics_data"
+MONGODB_COLLECTION = "test_data"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'lyrics (+http://www.yourdomain.com)'

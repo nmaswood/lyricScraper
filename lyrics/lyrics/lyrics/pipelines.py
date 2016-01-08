@@ -16,18 +16,23 @@ class MongoDBPipeline(object):
 
     def process_item(self, item, spider):
 
-        self.connection.insert(dict(item))
+        try:
+
+            genre = item["genre"]
+            title = item["title"]
+            url = item["url"]
+            if  genre != "" and title != ""and  url != "":
+
+                self.connection.insert(dict(item))
+        except:
+
+            title =  item["title"]
+            url_one = item["url_one"]
+            url_two = item["url_two"]
+            genre = item["genre"]
+            year = item["year"]
+            lyrics = item["lyrics"]
+
+            if year != "" and lyrics != "" and url_two != "":
+                self.connection.insert(dict(item))
         return item
-
-class FilterWordsPipeline(object):
-
-    words_to_filter = ['right now this does nothing:/']
-
-    def process_item(self, item , spider):
-
-        for word in self.words_to_filter:
-            if word in unicode(item['url']).lower():
-                raise DropItem("Contains forbidden word {}".format(word))
-            else:
-                return item
-
