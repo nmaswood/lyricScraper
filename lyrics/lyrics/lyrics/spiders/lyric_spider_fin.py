@@ -53,21 +53,23 @@ class LyricsSpiderFin(Spider):
 
         script_less=  ''.join(lyric_box).split("</script>")
 
-        try:
-            lyrics = script_less[1].split("<!--")[0].replace("<br>", " ")
-            lyric_info =script_less[0].split("adunit_id")[0]
-            lyric_info = lyric_info.split("{")[-1].split
-        except:
-            lyrics = ""
+        
+        lyrics = script_less[1].split("<!--")[0].replace("<br>", " ")
+        lyric_info =script_less[0].split("adunit_id")[0]
+        lyric_info = lyric_info.split("{")[-1].split(",")
 
-        try:    
-            artist = lyric_info[0]
-            song = lyric_info[1]
-            artist = artist.split(":")[-1].replace("\"", "").strip()
-            song_name =  song.split(":")[-1].replace("\"", "").strip()
-        except:
-            artist = ""
-            song_name = ""
+        #try:
+
+        print lyric_info[0]
+
+        print "\n\n\n"
+        artist = lyric_info[0]
+        song = lyric_info[1]
+        artist = artist.split(":")[-1].replace("\"", "").strip()
+        song_name =  song.split(":")[-1].replace("\"", "").strip()
+        #except:
+        #   artist = ""
+        #    song_name = ""
 
         full_lyrics_item = FullLyricsItem()
 
